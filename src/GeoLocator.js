@@ -3,13 +3,9 @@ import defaultConfig from './config';
 
 const buildRequestUrl = (ip, url, format) => _.join([url, format, ip], '/');
 
-// Sicp style
-
 export default (config = defaultConfig) => async (ip = '') => (
   await config.provider.get(buildRequestUrl(ip, config.url, config.dataFormat))
 ).data;
-
-// Class
 
 // export default class GeoLocator {
 //   constructor(config = {}) {

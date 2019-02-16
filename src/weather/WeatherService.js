@@ -11,7 +11,7 @@ export default class WeatherService {
     this.weatherProviders = config.weatherServices
       .reduce((acc, conf) => ({
         ...acc,
-        [conf.name]: new WeatherProvider(conf)
+        [conf.name]: new WeatherProvider(conf),
       }), {});
 
     this.activeService = config.defaultWeatherService;

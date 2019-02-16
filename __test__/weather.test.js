@@ -2,12 +2,6 @@ import _ from 'lodash';
 import WeatherService from '../src/weather/WeatherService';
 import config from '../src/weather/config';
 
-// it('should work', async () => {
-//   const service = new WeatherService();
-//   const weather = await service.getWeather('Moscow');
-//   console.log(weather);
-// });
-
 const [, openWeather] = config.weatherServices;
 
 const newServiceConfig = {
@@ -27,17 +21,18 @@ const fixture = {
   },
 };
 
+const getHttpFetcher = (settings, fixtures, city) => ({
+  get: (url, reqData) => {
+    const { params } = reqData;
+    const isRequestInfoCorrect = _.includes(url, settings.url)
+    && params[settings.query] === city.toLowerCase().trim();
+    return isRequestInfoCorrect ? fixtures[url][city] : null;
+  },
+});
+
 it('should make request to desired weather provider', async () => {
   const city = 'Moscow';
-
-  const httpFetcher = {
-    get: (url, reqData) => {
-      const { params } = reqData;
-      const isRequestInfoCorrect = _.includes(url, openWeather.url)
-      && params[openWeather.query] === city.toLowerCase().trim();
-      return isRequestInfoCorrect ? fixture[url][city] : null;
-    },
-  };
+  const httpFetcher = getHttpFetcher(openWeather, fixture, city);
 
   const service = new WeatherService(httpFetcher);
   const weather = await service
@@ -49,15 +44,7 @@ it('should make request to desired weather provider', async () => {
 
 it('should create new service and grab weather', async () => {
   const city = 'Sydney';
-
-  const httpFetcher = {
-    get: (url, reqData) => {
-      const { params } = reqData;
-      const isRequestInfoCorrect = _.includes(url, newServiceConfig.url)
-        && params[newServiceConfig.query] === city.toLowerCase().trim();
-      return isRequestInfoCorrect ? fixture[url][city] : null;
-    },
-  };
+  const httpFetcher = getHttpFetcher(newServiceConfig, fixture, city);
 
   const service = new WeatherService(httpFetcher);
   const weather = await service
@@ -67,3 +54,11 @@ it('should create new service and grab weather', async () => {
 
   expect(weather).toEqual(fixture[newServiceConfig.url][city].data);
 });
+
+// test with real http request
+
+// it('should work', async () => {
+//   const service = new WeatherService();
+//   const weather = await service.getWeather('Moscow');
+//   console.log(weather);
+// });

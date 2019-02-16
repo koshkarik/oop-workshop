@@ -1,8 +1,8 @@
-import _ from 'lodash';
-import defaultConfig from './config';
+import axios from 'axios';
+import config from './config';
 
-const buildRequestUrl = (ip, url, format) => _.join([url, format, ip], '/');
+const buildRequestUrl = (ip, url = config.url) => `${url}/${ip}`;
 
-export default (config = defaultConfig) => async (ip = '') => (
-  await config.provider.get(buildRequestUrl(ip, config.url, config.dataFormat))
+export default (provider = axios) => async (ip = '') => (
+  await provider.get(buildRequestUrl(ip))
 ).data;

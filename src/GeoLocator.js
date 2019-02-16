@@ -1,8 +1,7 @@
 import HttpService from './HttpService';
+import config from './config';
 
-const url = 'http://ip-api.com/json';
-
-const buildRequestUrl = ip => `${url}/${ip}`;
+const buildRequestUrl = (ip, url = config.url) => `${url}/${ip}`;
 
 export default class GeoLocator {
   constructor(service) {
@@ -10,7 +9,7 @@ export default class GeoLocator {
   }
 
   async getLocation(ip) {
-    const reqUrl = buildRequestUrl(ip, this.url, this.dataFormat);
+    const reqUrl = buildRequestUrl(ip);
     return (await this.provider.get(reqUrl)).data;
   }
 }

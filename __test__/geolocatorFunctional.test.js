@@ -1,19 +1,22 @@
 import geoLocatorFunc from '../src/geoLocatorFunctional';
+import getTestProvider, { testIp, testData } from '../testHelper';
+
+const testProvider = getTestProvider(testIp, testData);
 
 it('should return smth', async () => {
-  const data = 'fixtureData';
-  const provider = { get: () => ({ data }) };
-  const locatePosition = geoLocatorFunc(provider);
+  const locatePosition = geoLocatorFunc(testProvider);
 
   const locationData = await locatePosition();
-  expect(locationData).toEqual(data);
+  const { city, country } = locationData;
+  expect(city).toEqual(testData.default.data.city);
+  expect(country).toEqual(testData.default.data.country);
 });
 
 it('should return ip', async () => {
-  const ip = '222.222.222';
-  const provider = { get: () => ({ data: ip }) };
-  const locatePosition = geoLocatorFunc(provider);
+  const locatePosition = geoLocatorFunc(testProvider);
 
-  const locationData = await locatePosition();
-  expect(locationData).toEqual(ip);
+  const locationData = await locatePosition(testIp);
+  const { city, country } = locationData;
+  expect(city).toEqual(testData[testIp].data.city);
+  expect(country).toEqual(testData[testIp].data.country);
 });

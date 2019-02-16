@@ -8,8 +8,11 @@ export default class GeoLocator {
     this.provider = new HttpService(service);
   }
 
-  async getLocation(ip) {
+  async getLocation(ip = '') {
     const reqUrl = buildRequestUrl(ip);
+    // console.log('-------------------------------');
+    // console.log(this.provider.get(reqUrl).data);
+    // console.log('-------------------------------');
     return (await this.provider.get(reqUrl)).data;
   }
 }

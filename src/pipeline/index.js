@@ -1,6 +1,10 @@
 const fs = require('fs');
 
-const getMiddle = list => (list.length ? list[Math.round(list.length / 2) - 1] : '');
+const getMiddle = (list) => {
+  const middleIndex = Math.round(list.length / 2) - 1;
+  return list.length > 0 ? list[middleIndex] : '';
+};
+
 const makePlural = (item) => {
   if (!item.length) {
     return '';
@@ -13,6 +17,12 @@ export default (directory = './') => {
   if (!files.length) {
     return 'Directory is empty';
   }
-  return makePlural(getMiddle(files.filter(file => file[0] === '.').sort())).toUpperCase()
-    || 'None files matched criteria';
+  const parsedFiles = files
+    .filter(file => file[0] === '.')
+    .sort();
+
+  const middleFile = getMiddle(parsedFiles);
+  const result = makePlural(middleFile).toUpperCase();
+
+  return result || 'None files matched criteria';
 };

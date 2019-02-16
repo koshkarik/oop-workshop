@@ -9,7 +9,10 @@ export default class WeatherService {
     this.httpProvider = httpProvider;
 
     this.weatherProviders = config.weatherServices
-      .reduce((acc, conf) => ({ ...acc, [conf.name]: new WeatherProvider(conf) }), {});
+      .reduce((acc, conf) => ({
+        ...acc,
+        [conf.name]: new WeatherProvider(conf)
+      }), {});
 
     this.activeService = config.defaultWeatherService;
   }
@@ -36,7 +39,7 @@ export default class WeatherService {
   }
 
   use(serviceName) {
-    const weatherService = _.find(this.weatherProviders, { name: serviceName });
+    const weatherService = this.weatherProviders[serviceName];
     if (!weatherService) {
       throw new Error('Weather service not found!!!');
     }

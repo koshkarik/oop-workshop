@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parseFiles from '../src/pipeline';
+import parseFiles from '../src/pipeline/trashPipe';
 
 it('should return parsed filename', async () => {
   const fixture = ['aaa', '.aaa', '.bbb', '.ccc', 'no'];

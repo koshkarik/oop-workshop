@@ -17,6 +17,7 @@ export default (directory = './') => {
   if (!files.length) {
     return 'Directory is empty';
   }
+
   const parsedFiles = files
     .filter(file => file[0] === '.')
     .sort();

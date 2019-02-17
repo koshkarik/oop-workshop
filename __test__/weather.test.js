@@ -1,64 +1,48 @@
-import _ from 'lodash';
-import WeatherService from '../src/weather/WeatherService';
-import config from '../src/weather/config';
+import getWeatherService from '../src/weather/Weather';
 
-const [, openWeather] = config.weatherServices;
+it('shoud bring data from metaweather', async () => {
+  const city = 'moscow';
+  const cityId = '777';
+  const serviceName = 'MetaWeather';
+  const temprature = -40;
+  const cityIdUrl = `https://www.metaweather.com/api/location/search?query=${city}`;
+  const weatherUrl = `https://www.metaweather.com/api/location/${cityId}`;
 
-const newServiceConfig = {
-  name: 'weather_grabber',
-  url: 'https://get.it',
-  query: 'ququ',
-  params: {},
-};
+  const fixture = {
+    [cityIdUrl]: {
+      data: [{
+        woeid: cityId,
+        title: city,
+      }],
+    },
+    [weatherUrl]: {
+      data: {
+        consolidated_weather: [temprature],
+      },
+    },
+  };
 
-const fixture = {
-  [openWeather.url]: {
-    Moscow: { data: -100 },
-    Capetown: { data: -200 },
-  },
-  [newServiceConfig.url]: {
-    Sydney: { data: 35 },
-  },
-};
+  const httpClient = {
+    get: url => fixture[url],
+  };
 
-const getHttpFetcher = (settings, fixtures, city) => ({
-  get: (url, reqData) => {
-    const { params } = reqData;
-    const isRequestInfoCorrect = _.includes(url, settings.url)
-    && params[settings.query] === city.toLowerCase().trim();
-    return isRequestInfoCorrect ? fixtures[url][city] : null;
-  },
-});
+  const weatherService = getWeatherService(serviceName, { httpClient });
+  const weather = await weatherService.getByCity(city);
 
-it('should make request to desired weather provider', async () => {
-  const city = 'Moscow';
-  const httpFetcher = getHttpFetcher(openWeather, fixture, city);
-
-  const service = new WeatherService(httpFetcher);
-  const weather = await service
-    .use(config.defaultWeatherService)
-    .getWeather(city);
-
-  expect(weather).toEqual(fixture[openWeather.url][city].data);
-});
-
-it('should create new service and grab weather', async () => {
-  const city = 'Sydney';
-  const httpFetcher = getHttpFetcher(newServiceConfig, fixture, city);
-
-  const service = new WeatherService(httpFetcher);
-  const weather = await service
-    .addService(newServiceConfig)
-    .use(newServiceConfig.name)
-    .getWeather(city);
-
-  expect(weather).toEqual(fixture[newServiceConfig.url][city].data);
+  expect(weather).toBe(temprature);
 });
 
 // test with real http request
 
 // it('should work', async () => {
-//   const service = new WeatherService();
-//   const weather = await service.getWeather('Moscow');
+//   const service = getWeatherService(
+//    'OpenWeather', { apiKey: '870192228ba99bcc2b7ce50e323c1914' });
+//   const weather = await service.getByCity('Moscow');
+//   console.log(weather);
+// });
+
+// it('should work', async () => {
+//   const service = getWeatherService('MetaWeather');
+//   const weather = await service.getByCity('London');
 //   console.log(weather);
 // });

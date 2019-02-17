@@ -1,6 +1,6 @@
 {
   "name": "oop-workshop",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "oop workshop",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "lint": "eslint src"
   },
   "bin": {
-    "getgeo": "dist/bin/"
+    "getgeo": "dist/bin/geolocation.js",
+    "weather": "dist/bin/weather.js"
   },
   "author": "Koshkarev Yaroslav <koshkarevj2105@gmail.com>",
   "license": "ISC",
@@ -34,6 +35,7 @@
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "axios": "^0.18.0",
+    "commander": "^2.19.0",
     "lodash": "^4.17.11",
     "prettyjson": "^1.2.1"
   },

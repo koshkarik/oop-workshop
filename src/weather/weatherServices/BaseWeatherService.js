@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export default class BaseWeatherService {
-  constructor(apiKey, httpProvider) {
-    this.httpProvider = httpProvider || axios;
-    this.apiKey = apiKey || null;
+  constructor(config = {}) {
+    this.httpProvider = config.httpClient || axios;
+    this.apiKey = config.apiKey || null;
   }
 }

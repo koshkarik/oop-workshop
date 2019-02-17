@@ -5,7 +5,6 @@ import OpenWeather from './weatherServices/OpenWeather';
 const defaultService = OpenWeather;
 
 export default (serviceName, config = {}, CustomService) => {
-  const { httpClient, apiKey } = config;
   const services = {
     MetaWeather,
     OpenWeather,
@@ -13,5 +12,5 @@ export default (serviceName, config = {}, CustomService) => {
   };
 
   const ActiveService = _.get(services, serviceName, defaultService);
-  return new ActiveService(apiKey, httpClient);
+  return new ActiveService(config);
 };

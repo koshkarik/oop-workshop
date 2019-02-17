@@ -1,5 +1,5 @@
-import GeoLocator from '../src/GeoLocator';
-import getTestProvider, { testIp, testData } from '../testHelper';
+import GeoLocator from '../src/geolocator/GeoLocator';
+import getTestProvider, { testIp, testData } from './testHelper';
 
 const testProvider = getTestProvider(testIp, testData);
 

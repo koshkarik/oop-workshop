@@ -2,7 +2,7 @@
 
 import program from 'commander';
 import beatify from '../beatifier';
-import getWeatherService from '../weather/Weather';
+import getWeatherService from '../weather';
 
 program
   .arguments('<city>')

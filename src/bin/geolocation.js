@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import GeoLocator from '../GeoLocator';
+import GeoLocator from '../geolocator/GeoLocator';
 import beatify from '../beatifier';
 
 const locator = new GeoLocator();

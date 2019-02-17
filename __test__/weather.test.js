@@ -1,4 +1,4 @@
-import getWeatherService from '../src/weather/Weather';
+import getWeatherService from '../src/weather';
 
 it('shoud bring data from metaweather', async () => {
   const city = 'moscow';
